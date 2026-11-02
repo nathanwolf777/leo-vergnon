@@ -264,19 +264,30 @@ footer a:hover { color: var(--gold); }
 .b-edge, .b-top, .b-bot { background: repeating-linear-gradient(0deg, #ece6da 0 1px, #d9d2c4 1px 2px); }
 .b-edge { background: repeating-linear-gradient(90deg, #ece6da 0 1px, #d6cfc1 1px 2px); }
 .b-top, .b-bot { background: repeating-linear-gradient(0deg, #ece6da 0 1px, #d6cfc1 1px 2px); }
-.b-page { inset: 2px 3px 2px 0; transform: translateZ(calc(var(--t) / 2 - 2px)); background: linear-gradient(90deg, #d8d1c3, #f3eee4 6%, #f6f2ea); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 0 9%; }
+.b-page { inset: 2px 3px 2px 0; transform: translateZ(calc(var(--t) / 2 - 5px)); background: linear-gradient(90deg, #d8d1c3, #f3eee4 6%, #f6f2ea); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 0 9%; }
 .b-page img { width: 100%; height: auto; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
 .b-page small { font: 400 9px/1 var(--body); letter-spacing: .3em; text-transform: uppercase; color: #8a8173; }
 .b-cover { inset: 0; transform-origin: 0 50%; transform: translateZ(calc(var(--t) / 2)) rotateY(var(--open, 0deg)); transition: transform 1.1s var(--ease); transform-style: preserve-3d; backface-visibility: visible; }
 .b-cover > div { position: absolute; inset: 0; backface-visibility: hidden; }
 .b-front { background: radial-gradient(120% 90% at 30% 20%, #232120, #111011 70%); box-shadow: inset 0 0 0 1px rgba(201,169,110,.25), inset 4px 0 8px rgba(0,0,0,.6); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7%; padding: 0 12%; }
 .b-front img { width: 100%; height: auto; box-shadow: 0 2px 10px rgba(0,0,0,.6); }
-.b-front b { font: 300 clamp(14px, 2vw, 22px)/1 var(--display); letter-spacing: .45em; color: var(--gold); padding-left: .45em; }
+.b-front { gap: 5% !important; }
+.b-front b { font: 300 clamp(16px, 2.4vw, 28px)/1 var(--display); letter-spacing: .5em; color: var(--gold); padding-left: .5em; margin-top: 3%; }
+.b-front i { font: italic 300 clamp(11px, 1.3vw, 15px)/1 var(--display); color: #c9bfa9; letter-spacing: .3em; }
 .b-front::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.10), transparent 40%, transparent 60%, rgba(255,255,255,.04)); pointer-events: none; }
 .b-inside { transform: rotateY(180deg); background: linear-gradient(90deg, #f6f2ea, #e9e3d7); display: grid; place-items: center; }
-.b-inside span { font: italic 300 clamp(14px, 1.8vw, 20px)/1.3 var(--display); color: #6d6559; text-align: center; padding: 0 12%; }
-.stage3d.open .b-cover { --open: -165deg; }
-.stage3d.open .book { --sx: 26%; }
+.b-inside { display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+.b-inside small, .b-last small { font: 400 9px/1 var(--body); letter-spacing: .3em; text-transform: uppercase; color: #8a8173; }
+.b-last span, .b-inside span { font: italic 300 clamp(14px, 1.8vw, 20px)/1.3 var(--display); color: #6d6559; text-align: center; padding: 0 12%; }
+.stage3d.open .b-cover { --open: -172deg; }
+.leaf { inset: 2px 3px 2px 0; transform-origin: 0 50%; transform: translateZ(calc(var(--t) / 2 - 1px - var(--i) * 1px)) rotateY(var(--a, 0deg)); transition: transform 1s var(--ease); transform-style: preserve-3d; backface-visibility: visible !important; }
+.leaf > div { position: absolute; inset: 0; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 0 9%; }
+.leaf .lf { background: linear-gradient(90deg, #d8d1c3, #f3eee4 6%, #f6f2ea); }
+.leaf .lb { transform: rotateY(180deg); background: linear-gradient(270deg, #d8d1c3, #f3eee4 6%, #f6f2ea); }
+.leaf img { width: 100%; height: auto; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.leaf small { font: 400 9px/1 var(--body); letter-spacing: .3em; text-transform: uppercase; color: #8a8173; }
+.leaf.flipped { --a: calc(-170deg + var(--i) * 2deg); }
+.stage3d.open .book { --sx: 26%; --ry: -8deg; }
 .feature .hint { font-size: 13px; color: var(--mute); letter-spacing: .08em; margin-top: 10px; }
 .feature ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 0; }
 .feature li { padding: 14px 0; border-top: 1px solid var(--line); color: var(--ivory); }
@@ -285,7 +296,7 @@ footer a:hover { color: var(--gold); }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: clamp(48px, 7vw, 90px); }
 .duo h3 { margin-top: 18px; } .duo p { color: var(--mute); font-size: 15px; margin-top: 6px; }
 @media (max-width: 900px) { .feature, .duo { grid-template-columns: 1fr; } .stage3d { --w: 58vw; --t: 20px; height: calc(var(--h) + 120px); } .stage3d.open .book { --sx: 40%; } }
-@media (prefers-reduced-motion: reduce) { .book, .b-cover { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .book, .b-cover, .leaf { transition: none; } }
 
 /* Trois regards : la souris fait glisser d'une prise de vue à l'autre */
 .regards { margin-top: 48px; }
@@ -447,13 +458,14 @@ footer a:hover { color: var(--gold); }
   <div class="wrap">
     <div class="rv"><p class="eyebrow">Les produits phares</p><h2>Des images faites pour durer</h2></div>
     <div class="feature">
-      <div class="stage3d rv" id="stage3d" role="img" aria-label="Le Book en 3D : couverture noire avec une photo d’Alpine et le nom LÉO VERGNON en doré">
+      <div class="stage3d rv" id="stage3d" role="button" tabindex="0" aria-label="Book Ferrari SF90 en 3D : cliquer pour tourner les pages">
         <div class="book" id="book">
           <div class="b-back"></div>
-          <div class="b-spine"><span>LÉO VERGNON</span></div>
+          <div class="b-spine"><span>FERRARI SF90</span></div>
           <div class="b-edge"></div><div class="b-top"></div><div class="b-bot"></div>
-          <div class="b-page"><img src="images/sf90-fleurs.jpg" alt=""><small>Ferrari SF90 · Printemps</small></div>
-          <div class="b-cover"><div class="b-front"><img src="images/alpine-falaise.jpg" alt=""><b>LÉO VERGNON</b></div><div class="b-inside"><span>Votre automobile,<br>page après page.</span></div></div>
+          <div class="b-page b-last"><span>Votre automobile,<br>page après page.</span><small>Photographies Léo Vergnon</small></div>
+          <div class="leaf" style="--i:0"><div class="lf"><img src="images/sf90-profil.jpg" alt=""><small>Profil</small></div><div class="lb"><img src="images/sf90-arriere.jpg" alt=""><small>Signature arrière</small></div></div><div class="leaf" style="--i:1"><div class="lf"><img src="images/sf90-buissons.jpg" alt=""><small>Entre les massifs</small></div><div class="lb"><img src="images/sf90-cote.jpg" alt=""><small>Au jardin</small></div></div><div class="leaf" style="--i:2"><div class="lf"><img src="images/sf90-fleurs.jpg" alt=""><small>Printemps</small></div><div class="lb"><img src="images/sf90-batisse.jpg" alt=""><small>La bâtisse</small></div></div>
+          <div class="b-cover"><div class="b-front"><img src="images/sf90-face.jpg" alt=""><b>FERRARI</b><i>SF90</i></div><div class="b-inside"><span>Ferrari SF90</span><small>Photographies Léo Vergnon</small></div></div>
         </div>
       </div>
       <div class="rv">
@@ -465,7 +477,7 @@ footer a:hover { color: var(--gold); }
           <li><em>02</em>Sélection et mise en page de vos photos</li>
           <li><em>03</em>Retouche artistique de chaque image</li>
         </ul>
-        <p class="hint">Passez la souris sur le livre (ou touchez-le) pour l’ouvrir.</p>
+        <p class="hint">Survolez le livre pour l’ouvrir, cliquez pour tourner les pages.</p>
       </div>
     </div>
     <div class="duo">
@@ -707,15 +719,22 @@ footer a:hover { color: var(--gold); }
     st.addEventListener('pointermove', function (e) {
       var r = st.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
       bk.classList.add('live');
-      bk.style.setProperty('--ry', (-26 + x * 50) + 'deg');
+      bk.style.setProperty('--ry', ((st.classList.contains('open') ? -8 : -26) + x * 40) + 'deg');
       bk.style.setProperty('--rx', (16 - y * 30) + 'deg');
     });
+    var leaves = st.querySelectorAll('.leaf'), page = 0; // page = nombre de feuilles tournées
+    function close() { st.classList.remove('open'); page = 0; leaves.forEach(function (l) { l.classList.remove('flipped'); }); }
     st.addEventListener('pointerenter', function () { if (fine) st.classList.add('open'); });
     st.addEventListener('pointerleave', function () {
       bk.classList.remove('live'); bk.style.removeProperty('--ry'); bk.style.removeProperty('--rx');
-      if (fine) st.classList.remove('open');
+      if (fine && page === 0) close();
     });
-    st.addEventListener('click', function () { if (!fine) st.classList.toggle('open'); });
+    function next() {
+      if (!st.classList.contains('open')) { st.classList.add('open'); return; }
+      if (page < leaves.length) { leaves[page].classList.add('flipped'); page++; } else close();
+    }
+    st.addEventListener('click', next);
+    st.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } });
   })();
 
   // Trois regards : position de la souris = prise de vue affichée (fondu continu)
