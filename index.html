@@ -330,8 +330,8 @@ footer a:hover { color: var(--gold); }
 .print img { width: 100%; height: auto; }
 .print { cursor: zoom-in; }
 .prints3d.has-pick .print:not(.picked) { filter: brightness(.55); }
-.print.returning { animation: push-back .9s var(--ease) forwards; }
-.obj3d .print.picked, .obj3d:hover .print.picked { animation: pull-up 1.1s var(--ease) forwards; z-index: 5; box-shadow: 18px 40px 60px rgba(0,0,0,.75); cursor: zoom-out; }
+.print.anim { transition: filter .5s, box-shadow .7s; will-change: transform; }
+.print.picked { box-shadow: 18px 40px 60px rgba(0,0,0,.75); cursor: zoom-out; }
 .print { transition: transform .7s var(--ease), filter .5s, box-shadow .7s; }
 .print:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 .p1 { --fx: -8%; --fy: 4%; --fz: 0px; --fr: -7deg; }
@@ -341,19 +341,7 @@ footer a:hover { color: var(--gold); }
 .obj3d:hover .p2 { --fx: 0%; --fy: -6%; --fz: 30px; --fr: 0deg; }
 .obj3d:hover .p3 { --fx: 30%; --fy: 6%; --fz: 60px; --fr: 13deg; }
 .print { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
-@keyframes pull-up {
-  0% { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
-  45% { transform: translate3d(var(--fx), -88%, var(--fz)) rotate(calc(var(--fr) / 2)); }
-  55% { transform: translate3d(calc(var(--fx) / 2), -92%, 90px) rotate(0deg) scale(1.05); }
-  100% { transform: translate3d(0, -3%, 70px) rotate(0deg) scale(1.1); }
-}
-@keyframes push-back {
-  0% { transform: translate3d(0, -3%, 70px) rotate(0deg) scale(1.1); }
-  45% { transform: translate3d(calc(var(--fx) / 2), -92%, 90px) rotate(0deg) scale(1.05); }
-  55% { transform: translate3d(var(--fx), -88%, var(--fz)) rotate(calc(var(--fr) / 2)); }
-  100% { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
-}
-@media (prefers-reduced-motion: reduce) { .tilt, .print, .poster3d .frame { transition: none; } .print.picked, .print.returning { animation-duration: .01s !important; } }
+@media (prefers-reduced-motion: reduce) { .tilt, .print, .poster3d .frame { transition: none; } }
 </style>
 </head>
 <body>
@@ -665,25 +653,39 @@ footer a:hover { color: var(--gold); }
   function open(s, g) { group = g || null; opener = s; show(visible().indexOf(s)); lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false'); document.getElementById('lb-close').focus(); }
   function close() { lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); if (opener) opener.focus(); }
   shots.forEach(function (s) { s.addEventListener('click', function () { open(s); }); });
+  // Tirages : la photo sort du tas par le haut (animation calculée image par image, fluide et réversible)
   var prints = Array.prototype.slice.call(document.querySelectorAll('.print'));
-  document.querySelectorAll('.prints3d').forEach(function (pl) {
-    pl.closest('.obj3d').addEventListener('pointerleave', function () { prints.forEach(function (x) { if (x.classList.contains('picked')) { x.classList.remove('picked'); x.classList.add('returning'); setTimeout(function () { x.classList.remove('returning'); }, 900); } }); pl.classList.remove('has-pick'); });
-  });
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function sstep(a, b, t) { t = Math.max(0, Math.min(1, (t - a) / (b - a))); return t * t * (3 - 2 * t); }
   prints.forEach(function (pr) {
-    // la photo sort du tas (un second clic la repose)
-    function drop(x) {
-      if (!x.classList.contains('picked')) return;
-      x.classList.remove('picked'); x.classList.add('returning');
-      setTimeout(function () { x.classList.remove('returning'); }, 900);
+    pr._p = 0; pr._goal = 0; pr._raf = 0;
+    function frame(ts) {
+      if (!pr._last) pr._last = ts;
+      var dt = (ts - pr._last) / 1000; pr._last = ts;
+      var dir = pr._goal > pr._p ? 1 : -1;
+      pr._p = Math.max(0, Math.min(1, pr._p + dir * dt / (reduce ? .01 : 1)));
+      var cs = getComputedStyle(pr), fx = parseFloat(cs.getPropertyValue('--fx')), fy = parseFloat(cs.getPropertyValue('--fy')), fz = parseFloat(cs.getPropertyValue('--fz')), fr = parseFloat(cs.getPropertyValue('--fr'));
+      var e = ease(pr._p), arc = Math.sin(Math.PI * e);
+      var x = fx * (1 - e), y = fy + (-3 - fy) * e - 80 * arc, z = fz + (70 - fz) * sstep(.45, .75, e), r = fr * (1 - e), sc = 1 + .1 * e;
+      pr.style.transform = 'translate3d(' + x + '%,' + y + '%,' + z + 'px) rotate(' + r + 'deg) scale(' + sc + ')';
+      if (pr._p !== pr._goal) pr._raf = requestAnimationFrame(frame);
+      else { pr._raf = 0; pr._last = 0; if (pr._p === 0) { pr.style.transform = ''; pr.classList.remove('anim'); } }
     }
+    pr._go = function (goal) {
+      pr._goal = goal; pr.classList.add('anim'); pr.classList.toggle('picked', goal === 1);
+      if (!pr._raf) { pr._last = 0; pr._raf = requestAnimationFrame(frame); }
+    };
     function pick() {
-      var on = !pr.classList.contains('picked');
-      prints.forEach(drop);
-      pr.classList.toggle('picked', on);
+      var on = pr._goal !== 1;
+      prints.forEach(function (x) { if (x !== pr && x._goal === 1) x._go(0); });
+      pr._go(on ? 1 : 0);
       pr.parentNode.classList.toggle('has-pick', on);
     }
     pr.addEventListener('click', pick);
     pr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+  });
+  document.querySelectorAll('.prints3d').forEach(function (pl) {
+    pl.closest('.obj3d').addEventListener('pointerleave', function () { prints.forEach(function (x) { if (x._goal === 1) x._go(0); }); pl.classList.remove('has-pick'); });
   });
   document.getElementById('lb-close').addEventListener('click', close);
   document.getElementById('lb-prev').addEventListener('click', function () { show(idx - 1); });
