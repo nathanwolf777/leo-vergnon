@@ -330,16 +330,30 @@ footer a:hover { color: var(--gold); }
 .print img { width: 100%; height: auto; }
 .print { cursor: zoom-in; }
 .prints3d.has-pick .print:not(.picked) { filter: brightness(.55); }
-.obj3d .print.picked, .obj3d:hover .print.picked { transform: translate3d(0, -3%, 70px) rotate(0deg) scale(1.1); z-index: 5; box-shadow: 18px 40px 60px rgba(0,0,0,.75); cursor: zoom-out; }
+.print.returning { animation: push-back .9s var(--ease) forwards; }
+.obj3d .print.picked, .obj3d:hover .print.picked { animation: pull-up 1.1s var(--ease) forwards; z-index: 5; box-shadow: 18px 40px 60px rgba(0,0,0,.75); cursor: zoom-out; }
 .print { transition: transform .7s var(--ease), filter .5s, box-shadow .7s; }
 .print:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-.p1 { transform: translate3d(-8%, 4%, 0) rotate(-7deg); }
-.p2 { transform: translate3d(0, 0, 14px) rotate(1deg); }
-.p3 { transform: translate3d(8%, -3%, 28px) rotate(6deg); }
-.obj3d:hover .p1 { transform: translate3d(-30%, 8%, 0) rotate(-14deg); }
-.obj3d:hover .p2 { transform: translate3d(0, -6%, 30px) rotate(0deg); }
-.obj3d:hover .p3 { transform: translate3d(30%, 6%, 60px) rotate(13deg); }
-@media (prefers-reduced-motion: reduce) { .tilt, .print, .poster3d .frame { transition: none; } }
+.p1 { --fx: -8%; --fy: 4%; --fz: 0px; --fr: -7deg; }
+.p2 { --fx: 0%; --fy: 0%; --fz: 14px; --fr: 1deg; }
+.p3 { --fx: 8%; --fy: -3%; --fz: 28px; --fr: 6deg; }
+.obj3d:hover .p1 { --fx: -30%; --fy: 8%; --fz: 0px; --fr: -14deg; }
+.obj3d:hover .p2 { --fx: 0%; --fy: -6%; --fz: 30px; --fr: 0deg; }
+.obj3d:hover .p3 { --fx: 30%; --fy: 6%; --fz: 60px; --fr: 13deg; }
+.print { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
+@keyframes pull-up {
+  0% { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
+  45% { transform: translate3d(var(--fx), -88%, var(--fz)) rotate(calc(var(--fr) / 2)); }
+  55% { transform: translate3d(calc(var(--fx) / 2), -92%, 90px) rotate(0deg) scale(1.05); }
+  100% { transform: translate3d(0, -3%, 70px) rotate(0deg) scale(1.1); }
+}
+@keyframes push-back {
+  0% { transform: translate3d(0, -3%, 70px) rotate(0deg) scale(1.1); }
+  45% { transform: translate3d(calc(var(--fx) / 2), -92%, 90px) rotate(0deg) scale(1.05); }
+  55% { transform: translate3d(var(--fx), -88%, var(--fz)) rotate(calc(var(--fr) / 2)); }
+  100% { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .tilt, .print, .poster3d .frame { transition: none; } .print.picked, .print.returning { animation-duration: .01s !important; } }
 </style>
 </head>
 <body>
@@ -653,13 +667,18 @@ footer a:hover { color: var(--gold); }
   shots.forEach(function (s) { s.addEventListener('click', function () { open(s); }); });
   var prints = Array.prototype.slice.call(document.querySelectorAll('.print'));
   document.querySelectorAll('.prints3d').forEach(function (pl) {
-    pl.closest('.obj3d').addEventListener('pointerleave', function () { prints.forEach(function (x) { x.classList.remove('picked'); }); pl.classList.remove('has-pick'); });
+    pl.closest('.obj3d').addEventListener('pointerleave', function () { prints.forEach(function (x) { if (x.classList.contains('picked')) { x.classList.remove('picked'); x.classList.add('returning'); setTimeout(function () { x.classList.remove('returning'); }, 900); } }); pl.classList.remove('has-pick'); });
   });
   prints.forEach(function (pr) {
     // la photo sort du tas (un second clic la repose)
+    function drop(x) {
+      if (!x.classList.contains('picked')) return;
+      x.classList.remove('picked'); x.classList.add('returning');
+      setTimeout(function () { x.classList.remove('returning'); }, 900);
+    }
     function pick() {
       var on = !pr.classList.contains('picked');
-      prints.forEach(function (x) { x.classList.remove('picked'); });
+      prints.forEach(drop);
       pr.classList.toggle('picked', on);
       pr.parentNode.classList.toggle('has-pick', on);
     }
