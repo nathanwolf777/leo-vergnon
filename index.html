@@ -301,7 +301,7 @@ footer a:hover { color: var(--gold); }
 
 /* Trois regards : la souris fait glisser d'une prise de vue à l'autre */
 .regards { margin-top: 48px; }
-.rg-stage { position: relative; aspect-ratio: 2 / 1; max-width: 100%; perspective: 1200px; cursor: ew-resize; touch-action: pan-y; }
+.rg-stage { position: relative; aspect-ratio: 3 / 2; max-width: 100%; perspective: 1200px; cursor: ew-resize; touch-action: pan-y; }
 .rg-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)) scale(var(--sc, 1)); transition: transform .5s var(--ease); will-change: opacity, transform; }
 .rg-stage img.on { opacity: 1; }
 .rg-hint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); font: 400 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase; color: var(--ivory); background: rgba(13,13,14,.55); padding: 9px 14px; pointer-events: none; transition: opacity .5s; }
@@ -364,10 +364,10 @@ footer a:hover { color: var(--gold); }
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="hero" id="top">
   <div class="slides" aria-hidden="true">
-    <img class="on" src="images/alpine-falaise.jpg" alt="" style="object-position:60% 60%">
-    <img src="images/ferrari-812-cheval.jpg" alt="" style="object-position:50% 70%">
-    <img src="images/porsche-911r-rolling.jpg" alt="" style="object-position:50% 50%">
-    <img src="images/porsche-911-fontaine.jpg" alt="" style="object-position:50% 60%">
+    <img class="on" src="images/alpine-falaise.jpg" alt="">
+    <img src="images/812-jaune.jpg" alt="">
+    <img src="images/911r-manege.jpg" alt="">
+    <img src="images/gt3-allee.jpg" alt="">
   </div>
   <div class="wrap">
     <p class="eyebrow">Photographe automobile · Valence</p>
@@ -412,22 +412,45 @@ footer a:hover { color: var(--gold); }
       </div>
     </div>
     <div class="masonry" id="grid">
-      <button type="button" class="shot" data-c="statique" style="--r:2.106"><figure style="margin:0"><img loading="lazy" src="images/ferrari-812-cheval.jpg" width="817" height="388" alt="Ferrari 812 bleue face à un cheval dans un manège"><figcaption>Ferrari 812 · Manège</figcaption></figure></button>
-      <button type="button" class="shot" data-c="rolling" style="--r:0.915"><figure style="margin:0"><img loading="lazy" src="images/rolling-vert-route.jpg" width="562" height="614" alt="Voiture verte en mouvement sur une route bordée d’arbres d’automne"><figcaption>Rolling · Route d’automne</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.902"><figure style="margin:0"><img loading="lazy" src="images/ferrari-sf90-batisse.jpg" width="795" height="418" alt="Ferrari SF90 rouge devant une bâtisse en pierre"><figcaption>Ferrari SF90 · Bâtisse</figcaption></figure></button>
-      <button type="button" class="shot" data-c="details" style="--r:1.745"><figure style="margin:0"><img loading="lazy" src="images/ferrari-volant.jpg" width="815" height="467" alt="Volant et habitacle d’une Ferrari, surpiqûres jaunes"><figcaption>Détail · Habitacle Ferrari</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.466"><figure style="margin:0"><img loading="lazy" src="images/lamborghini-violette.jpg" width="629" height="429" alt="Lamborghini violette sur une route ombragée"><figcaption>Lamborghini · Sous-bois</figcaption></figure></button>
-      <button type="button" class="shot" data-c="rolling" style="--r:1.890"><figure style="margin:0"><img loading="lazy" src="images/porsche-911r-rolling.jpg" width="773" height="409" alt="Porsche 911 R en mouvement au crépuscule"><figcaption>Rolling · 911 R au crépuscule</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.912"><figure style="margin:0"><img loading="lazy" src="images/sf90-fleurs.jpg" width="782" height="409" alt="Arrière d’une Ferrari SF90 rouge entre des fleurs rouges"><figcaption>Ferrari SF90 · Floraison</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.825"><figure style="margin:0"><img loading="lazy" src="images/amg-gt-foin.jpg" width="805" height="441" alt="Mercedes-AMG GT rouge devant des bottes de foin"><figcaption>AMG GT · Grange</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.925"><figure style="margin:0"><img loading="lazy" src="images/porsche-911r-manege.jpg" width="824" height="428" alt="Porsche 911 R blanche et rouge dans un manège, un cheval derrière"><figcaption>Porsche 911 R · Manège</figcaption></figure></button>
-      <button type="button" class="shot" data-c="rolling" style="--r:2.033"><figure style="margin:0"><img loading="lazy" src="images/rolling-vert-automne.jpg" width="795" height="391" alt="Voiture verte en mouvement sur une route d’automne"><figcaption>Rolling · Feuilles d’automne</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.959"><figure style="margin:0"><img loading="lazy" src="images/ferrari-vignes.jpg" width="772" height="394" alt="Ferrari verte sur un chemin pavé au milieu des vignes"><figcaption>Ferrari · Vignoble</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.837"><figure style="margin:0"><img loading="lazy" src="images/porsche-911-fontaine.jpg" width="814" height="443" alt="Porsche 911 argentée devant une fontaine, entre deux cyprès"><figcaption>Porsche 911 · Fontaine</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.941"><figure style="margin:0"><img loading="lazy" src="images/porsche-spyder-batisse.jpg" width="790" height="407" alt="Porsche Spyder grise devant une bâtisse ancienne"><figcaption>Porsche Spyder · Bâtisse</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.557"><figure style="margin:0"><img loading="lazy" src="images/amg-gt-pin.jpg" width="802" height="515" alt="Mercedes-AMG GT grise sous un pin"><figcaption>AMG GT · Campagne</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:2.003"><figure style="margin:0"><img loading="lazy" src="images/cayman-gt4-portail.jpg" width="791" height="395" alt="Porsche Cayman GT4 bleue devant un portail en fer forgé"><figcaption>Cayman GT4 · Portail</figcaption></figure></button>
-      <button type="button" class="shot" data-c="statique" style="--r:1.800"><figure style="margin:0"><img loading="lazy" src="images/alpine-falaise.jpg" width="772" height="429" alt="Alpine rose sur une route taillée dans la falaise"><figcaption>Alpine · Falaise</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/812-gts-manege-m.jpg" data-full="images/812-gts-manege.jpg" width="1000" height="668" alt="Ferrari 812 GTS bleue face à un cheval dans un manège"><figcaption>Ferrari 812 GTS · Manège</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/alpine-tunnel-m.jpg" data-full="images/alpine-tunnel.jpg" width="1000" height="668" alt="Alpine A110 rose, phares allumés, dans un tunnel creusé dans la roche"><figcaption>Alpine A110 · Tunnel</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/sf90-massifs-m.jpg" data-full="images/sf90-massifs.jpg" width="1000" height="668" alt="Ferrari SF90 rouge entre les massifs fleuris"><figcaption>Ferrari SF90 · Entre les massifs</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/dbs-habitacle-m.jpg" data-full="images/dbs-habitacle.jpg" width="1000" height="668" alt="Habitacle et volant de l’Aston Martin DBS"><figcaption>Aston Martin DBS · Habitacle</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/gt86-automne-m.jpg" data-full="images/gt86-automne.jpg" width="1000" height="668" alt="Toyota GT86 verte en mouvement sur une route d’automne"><figcaption>Toyota GT86 · Automne</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/turbo-portail-m.jpg" data-full="images/turbo-portail.jpg" width="1000" height="668" alt="Porsche 911 Turbo S grise devant un portail en pierre, au soleil couchant"><figcaption>Porsche 911 Turbo S · Le portail</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/purosangue-vignes-m.jpg" data-full="images/purosangue-vignes.jpg" width="1000" height="668" alt="Ferrari Purosangue verte sur un chemin pavé au milieu des vignes"><figcaption>Ferrari Purosangue · Vignes</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/812-jaune-moteur-m.jpg" data-full="images/812-jaune-moteur.jpg" width="1000" height="668" alt="Moteur V12 rouge de la Ferrari 812 jaune"><figcaption>Ferrari 812 Competizione A · V12</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/911r-rolling-m.jpg" data-full="images/911r-rolling.jpg" width="1000" height="668" alt="Porsche 911 R en mouvement au crépuscule"><figcaption>Porsche 911 R · Crépuscule</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/spyder-ruines-m.jpg" data-full="images/spyder-ruines.jpg" width="1000" height="668" alt="Porsche 718 Spyder grise devant des ruines, au soleil"><figcaption>Porsche 718 Spyder · Ruines</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/812-jaune-m.jpg" data-full="images/812-jaune.jpg" width="1000" height="668" alt="Ferrari 812 jaune aux jantes bleues dans un studio sombre"><figcaption>Ferrari 812 Competizione A · Studio</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/m3-rolling-m.jpg" data-full="images/m3-rolling.jpg" width="1000" height="668" alt="BMW M3 E36 noire en mouvement au coucher du soleil"><figcaption>BMW M3 E36 · Rolling</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/gtr-silos-m.jpg" data-full="images/gtr-silos.jpg" width="1000" height="668" alt="Nissan GT-R argentée au pied de grands silos"><figcaption>Nissan GT-R · Silos</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/sf90-habitacle-m.jpg" data-full="images/sf90-habitacle.jpg" width="1000" height="668" alt="Habitacle de la Ferrari SF90, portière ouverte"><figcaption>Ferrari SF90 · Habitacle</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/alpine-falaise-m.jpg" data-full="images/alpine-falaise.jpg" width="1000" height="668" alt="Alpine A110 rose sur une route taillée dans la falaise"><figcaption>Alpine A110 · Route de falaise</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/dbs-rolling-m.jpg" data-full="images/dbs-rolling.jpg" width="1000" height="668" alt="Aston Martin DBS lancée sur une route de campagne, au soleil"><figcaption>Aston Martin DBS · Rolling</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/gt4-portail-m.jpg" data-full="images/gt4-portail.jpg" width="1000" height="668" alt="Porsche Cayman GT4 bleue devant un portail en fer forgé"><figcaption>Porsche Cayman GT4 · Portail</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/amg-gt-pins-m.jpg" data-full="images/amg-gt-pins.jpg" width="1000" height="668" alt="Mercedes-AMG GT grise sous les pins, la plaine au loin"><figcaption>Mercedes-AMG GT · Sous les pins</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.500"><figure style="margin:0"><img loading="lazy" src="images/mondial-rolling-m.jpg" data-full="images/mondial-rolling.jpg" width="1000" height="667" alt="Ferrari Mondial rouge en mouvement sur une route mouillée"><figcaption>Ferrari Mondial · Sous la pluie</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/turbo-fontaine-m.jpg" data-full="images/turbo-fontaine.jpg" width="1000" height="668" alt="Porsche 911 argentée derrière une fontaine, entre deux cyprès"><figcaption>Porsche 911 Turbo S · Fontaine</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/m3-habitacle-m.jpg" data-full="images/m3-habitacle.jpg" width="1000" height="668" alt="Sièges cuir beige de la BMW M3 E36, à contre-jour"><figcaption>BMW M3 E36 · Habitacle</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.555"><figure style="margin:0"><img loading="lazy" src="images/911r-manege-m.jpg" data-full="images/911r-manege.jpg" width="1000" height="643" alt="Porsche 911 R blanche et rouge dans un manège, un cheval derrière"><figcaption>Porsche 911 R · Manège</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/812-gts-route-m.jpg" data-full="images/812-gts-route.jpg" width="1000" height="668" alt="Ferrari 812 GTS bleue lancée sur une route bordée d’arbres"><figcaption>Ferrari 812 GTS · En route</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/cayman-briques-m.jpg" data-full="images/cayman-briques.jpg" width="1000" height="668" alt="Porsche Cayman noire de profil dans une halle aux murs de briques"><figcaption>Porsche Cayman · Halle de briques</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/gt3-allee-m.jpg" data-full="images/gt3-allee.jpg" width="1000" height="668" alt="Porsche 911 GT3 blanche de face dans une allée d’arbres"><figcaption>Porsche 911 GT3 · Allée de platanes</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/amg-gt-rouge-m.jpg" data-full="images/amg-gt-rouge.jpg" width="1000" height="668" alt="Mercedes-AMG GT rouge en mouvement sur une route de campagne"><figcaption>Mercedes-AMG GT · Rolling</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/sf90-arriere-m.jpg" data-full="images/sf90-arriere.jpg" width="1000" height="668" alt="Arrière de la Ferrari SF90 rouge entre les fleurs"><figcaption>Ferrari SF90 · Signature arrière</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/turbo-habitacle-m.jpg" data-full="images/turbo-habitacle.jpg" width="1000" height="668" alt="Habitacle cuir de la Porsche 911 Turbo S"><figcaption>Porsche 911 Turbo S · Habitacle</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/dbs-oliviers-m.jpg" data-full="images/dbs-oliviers.jpg" width="1000" height="668" alt="Aston Martin DBS grise sous les oliviers"><figcaption>Aston Martin DBS · Oliviers</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/spyder-ruines-profil-m.jpg" data-full="images/spyder-ruines-profil.jpg" width="1000" height="668" alt="Porsche 718 Spyder grise de profil devant une tour en ruine"><figcaption>Porsche 718 Spyder · Profil</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/997-rolling-m.jpg" data-full="images/997-rolling.jpg" width="1000" height="668" alt="Porsche 911 argentée en mouvement, soleil couchant"><figcaption>Porsche 911 · Rolling</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/m3-vignes-m.jpg" data-full="images/m3-vignes.jpg" width="1000" height="668" alt="BMW M3 E36 noire sur un chemin au milieu des vignes"><figcaption>BMW M3 E36 · Vignes</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.562"><figure style="margin:0"><img loading="lazy" src="images/gt4-habitacle-m.jpg" data-full="images/gt4-habitacle.jpg" width="1000" height="640" alt="Habitacle de la Porsche Cayman GT4, harnais rouges"><figcaption>Porsche Cayman GT4 · Habitacle</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/amg-gt-jardin-m.jpg" data-full="images/amg-gt-jardin.jpg" width="1000" height="668" alt="Mercedes-AMG GT grise dans l’allée d’un jardin"><figcaption>Mercedes-AMG GT · Jardin</figcaption></figure></button>
+      <button type="button" class="shot" data-c="rolling" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/812-gts-rolling-m.jpg" data-full="images/812-gts-rolling.jpg" width="1000" height="668" alt="Ferrari 812 GTS bleue en mouvement sur une route de campagne"><figcaption>Ferrari 812 GTS · Rolling</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/sf90-profil-m.jpg" data-full="images/sf90-profil.jpg" width="1000" height="668" alt="Ferrari SF90 rouge de profil sur la pelouse"><figcaption>Ferrari SF90 · Profil</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/911r-arriere-m.jpg" data-full="images/911r-arriere.jpg" width="1000" height="668" alt="Arrière de la Porsche 911 R blanche dans un manège"><figcaption>Porsche 911 R · Arrière</figcaption></figure></button>
+      <button type="button" class="shot" data-c="details" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/amg-gt-habitacle-m.jpg" data-full="images/amg-gt-habitacle.jpg" width="1000" height="668" alt="Habitacle de la Mercedes-AMG GT, portière ouverte"><figcaption>Mercedes-AMG GT · Habitacle</figcaption></figure></button>
+      <button type="button" class="shot" data-c="statique" style="--r:1.498"><figure style="margin:0"><img loading="lazy" src="images/812-jaune-studio-m.jpg" data-full="images/812-jaune-studio.jpg" width="1000" height="668" alt="Ferrari 812 jaune de trois quarts arrière dans un studio sombre"><figcaption>Ferrari 812 Competizione A · Studio</figcaption></figure></button>
     </div>
   </div>
 </section>
@@ -442,9 +465,9 @@ footer a:hover { color: var(--gold); }
 <section class="offers" id="formules">
   <div class="wrap offer-grid">
     <div class="stage rv" id="stage">
-      <img class="on" src="images/ferrari-vignes.jpg" width="772" height="394" alt="Ferrari verte au milieu des vignes">
-      <img src="images/porsche-spyder-batisse.jpg" width="790" height="407" alt="Porsche Spyder devant une bâtisse ancienne">
-      <img src="images/rolling-vert-automne.jpg" width="795" height="391" alt="Voiture verte en mouvement sur une route d’automne">
+      <img class="on" src="images/spyder-ruines-m.jpg" width="1000" height="668" alt="Porsche 718 Spyder grise devant des ruines, au soleil">
+      <img src="images/mondial-rolling-m.jpg" width="1000" height="667" alt="Ferrari Mondial rouge en mouvement sur une route mouillée">
+      <img src="images/turbo-portail-m.jpg" width="1000" height="668" alt="Porsche 911 Turbo S grise devant un portail en pierre, au soleil couchant">
     </div>
     <div class="rv">
       <p class="eyebrow">Les formules</p>
@@ -463,9 +486,9 @@ footer a:hover { color: var(--gold); }
     <div class="rv"><p class="eyebrow">Les prises de vue</p><h2>Trois regards sur une même automobile</h2></div>
     <div class="regards rv" id="regards">
       <div class="rg-stage" id="rg-stage">
-        <img src="images/aston-statique.jpg" width="768" height="342" alt="Aston Martin DBS garée sous les oliviers" class="on">
-        <img src="images/aston-rolling.jpg" width="812" height="421" alt="Aston Martin DBS lancée sur une route de campagne" loading="lazy">
-        <img src="images/aston-details.jpg" width="775" height="386" alt="Habitacle et volant de l’Aston Martin DBS" loading="lazy">
+        <img src="images/dbs-oliviers.jpg" width="2000" height="1335" alt="Aston Martin DBS garée sous les oliviers" class="on">
+        <img src="images/dbs-rolling.jpg" width="2000" height="1335" alt="Aston Martin DBS lancée sur une route de campagne, au soleil" loading="lazy">
+        <img src="images/dbs-habitacle.jpg" width="2000" height="1335" alt="Habitacle et volant de l’Aston Martin DBS" loading="lazy">
         <span class="rg-hint" aria-hidden="true">← déplacez la souris →</span>
       </div>
       <div class="rg-tabs" role="tablist">
@@ -488,8 +511,8 @@ footer a:hover { color: var(--gold); }
           <div class="b-spine"><span>FERRARI SF90</span></div>
           <div class="b-edge"></div><div class="b-top"></div><div class="b-bot"></div>
           <div class="b-page b-last"><span>Votre automobile,<br>page après page.</span><small>Photographies Léo Vergnon</small></div>
-          <div class="leaf" style="--i:0"><div class="lf"><img src="images/sf90-profil.jpg" alt=""><small>Profil</small></div><div class="lb"><img src="images/sf90-arriere.jpg" alt=""><small>Signature arrière</small></div></div><div class="leaf" style="--i:1"><div class="lf"><img src="images/sf90-buissons.jpg" alt=""><small>Entre les massifs</small></div><div class="lb"><img src="images/sf90-cote.jpg" alt=""><small>Au jardin</small></div></div><div class="leaf" style="--i:2"><div class="lf"><img src="images/sf90-fleurs.jpg" alt=""><small>Printemps</small></div><div class="lb"><img src="images/sf90-batisse.jpg" alt=""><small>La bâtisse</small></div></div>
-          <div class="b-cover"><div class="b-front"><img src="images/sf90-face.jpg" alt=""><b>FERRARI</b><i>SF90</i></div><div class="b-inside"><span>Ferrari SF90</span><small>Photographies Léo Vergnon</small></div></div>
+          <div class="leaf" style="--i:0"><div class="lf"><img src="images/sf90-profil-m.jpg" alt=""><small>Profil</small></div><div class="lb"><img src="images/sf90-arriere-m.jpg" alt=""><small>Signature arrière</small></div></div><div class="leaf" style="--i:1"><div class="lf"><img src="images/sf90-habitacle-m.jpg" alt=""><small>Habitacle</small></div><div class="lb"><img src="images/sf90-massifs-m.jpg" alt=""><small>Entre les massifs</small></div></div>
+          <div class="b-cover"><div class="b-front"><img src="images/sf90-massifs-m.jpg" alt=""><b>FERRARI</b><i>SF90</i></div><div class="b-inside"><span>Ferrari SF90</span><small>Photographies Léo Vergnon</small></div></div>
         </div>
       </div>
       <div class="rv">
@@ -505,14 +528,14 @@ footer a:hover { color: var(--gold); }
       </div>
     </div>
     <div class="duo">
-      <article class="rv"><div class="obj3d" data-tilt role="img" aria-label="Poster encadré : Ferrari 812 face à un cheval">
-        <div class="tilt poster3d"><div class="frame"><div class="mat"><img loading="lazy" src="images/ferrari-812-cheval.jpg" alt=""></div></div><span class="glare"></span></div>
+      <article class="rv"><div class="obj3d" data-tilt role="img" aria-label="Poster encadré : Ferrari 812 GTS face à un cheval">
+        <div class="tilt poster3d"><div class="frame"><div class="mat"><img loading="lazy" src="images/812-gts-manege-m.jpg" alt=""></div></div><span class="glare"></span></div>
       </div><h3>Posters</h3><p>Grand format, à exposer au bureau comme au garage.</p></article>
       <article class="rv"><div class="obj3d" data-tilt aria-label="Trois tirages photo en éventail">
         <div class="tilt prints3d">
-          <div class="print p1" role="button" tabindex="0" data-cap="Tirage · Rolling d’automne" aria-label="Sortir du tas : Tirage · Rolling d’automne"><img loading="lazy" src="images/rolling-vert-automne.jpg" alt=""></div>
-          <div class="print p2" role="button" tabindex="0" data-cap="Tirage · Porsche Cayman GT4" aria-label="Sortir du tas : Tirage · Porsche Cayman GT4"><img loading="lazy" src="images/cayman-gt4-portail.jpg" alt=""></div>
-          <div class="print p3" role="button" tabindex="0" data-cap="Tirage · Mercedes-AMG GT sous le foin" aria-label="Sortir du tas : Tirage · Mercedes-AMG GT sous le foin"><img loading="lazy" src="images/amg-gt-foin.jpg" alt=""></div>
+          <div class="print p1" role="button" tabindex="0" data-cap="Tirage · Toyota GT86 en automne" aria-label="Sortir du tas : Tirage · Toyota GT86 en automne"><img loading="lazy" src="images/gt86-automne-m.jpg" alt=""></div>
+          <div class="print p2" role="button" tabindex="0" data-cap="Tirage · Porsche Cayman GT4" aria-label="Sortir du tas : Tirage · Porsche Cayman GT4"><img loading="lazy" src="images/gt4-portail-m.jpg" alt=""></div>
+          <div class="print p3" role="button" tabindex="0" data-cap="Tirage · Nissan GT-R aux silos" aria-label="Sortir du tas : Tirage · Nissan GT-R aux silos"><img loading="lazy" src="images/gtr-silos-m.jpg" alt=""></div>
         </div>
       </div><h3>Tirages</h3><p>Tirages d’art, avec ou sans cadre. Cliquez sur un tirage pour le sortir du tas.</p></article>
     </div>
@@ -532,12 +555,12 @@ footer a:hover { color: var(--gold); }
         <li>Entreprises haut de gamme</li>
       </ul>
     </div>
-    <img class="rv" loading="lazy" src="images/porsche-911r-manege.jpg" width="824" height="428" alt="Porsche 911 R dans un manège, un cheval derrière">
+    <img class="rv" loading="lazy" src="images/911r-arriere-m.jpg" width="1000" height="667" alt="Arrière de la Porsche 911 R blanche dans un manège">
   </div>
 </section>
 
 <section class="quote" id="devis">
-  <img src="images/amg-gt-foin.jpg" alt="" aria-hidden="true">
+  <img src="images/812-jaune-studio-m.jpg" alt="" aria-hidden="true">
   <div class="wrap">
     <div class="rv">
       <p class="eyebrow">Demande de devis</p>
@@ -606,17 +629,16 @@ footer a:hover { color: var(--gold); }
   // Rangées justifiées : chaque rangée remplit toute la largeur, sans recadrer ni laisser de trou
   var grid = document.getElementById('grid');
   function layout() {
-    var W = grid.clientWidth, gap = 14, H = W < 600 ? W : (W < 1000 ? 240 : 270);
-    var v = shots.filter(function (s) { return !s.hidden; }), rows = [], row = [], sum = 0;
-    v.forEach(function (s) {
-      row.push(s); sum += +s.style.getPropertyValue('--r');
-      if ((W - gap * (row.length - 1)) / sum <= H) { rows.push([row, sum]); row = []; sum = 0; }
-    });
-    if (row.length) {
-      var h = (W - gap * (row.length - 1)) / sum;
-      if (rows.length && h > H * 1.5) { var last = rows.pop(); rows.push([last[0].concat(row), last[1] + sum]); }
-      else rows.push([row, sum]);
+    var W = grid.clientWidth, gap = 14;
+    var pat = W < 600 ? [1] : W < 1000 ? [2] : [2, 3, 3]; // rythme des rangées
+    var v = shots.filter(function (s) { return !s.hidden; }), rows = [], i = 0, k = 0;
+    while (i < v.length) {
+      var n = Math.min(pat[k % pat.length], v.length - i), row = v.slice(i, i + n), sum = 0;
+      row.forEach(function (s) { sum += +s.style.getPropertyValue('--r'); });
+      rows.push([row, sum]); i += n; k++;
     }
+    // une photo seule en dernière rangée rejoint la précédente
+    if (rows.length > 1 && rows[rows.length - 1][0].length === 1 && pat[0] > 1) { var l = rows.pop(); rows[rows.length - 1][0].push(l[0][0]); rows[rows.length - 1][1] += l[1]; }
     rows.forEach(function (r) {
       var h = (W - gap * (r[0].length - 1)) / r[1];
       r[0].forEach(function (s, i) {
@@ -644,7 +666,7 @@ footer a:hover { color: var(--gold); }
   function show(i) {
     var v = visible(); idx = (i + v.length) % v.length;
     var img = v[idx].querySelector('img'), fc = v[idx].querySelector('figcaption');
-    lbImg.src = img.src; lbImg.alt = img.alt || v[idx].dataset.cap; lbCap.textContent = fc ? fc.textContent : v[idx].dataset.cap;
+    lbImg.src = img.dataset.full || img.src; lbImg.alt = img.alt || v[idx].dataset.cap; lbCap.textContent = fc ? fc.textContent : v[idx].dataset.cap;
   }
   function open(s, g) { group = g || null; opener = s; show(visible().indexOf(s)); lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false'); document.getElementById('lb-close').focus(); }
   function close() { lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); if (opener) opener.focus(); }
