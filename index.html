@@ -120,6 +120,10 @@ section { padding-block: clamp(80px, 11vw, 150px); }
 .offers { background: var(--ink-2); border-block: 1px solid var(--line); }
 .offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 96px); align-items: center; }
 .offer-grid > * { min-width: 0; }
+@media (min-width: 901px) {
+  /* la photo prend toute la gauche de l'écran, jusqu'au bord */
+  .offers .offer-grid { max-width: none; padding-left: 0; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); padding-right: max(40px, calc((100vw - 1320px) / 2 + 20px)); }
+}
 .stage { position: relative; }
 .stage img { width: 100%; transition: opacity .6s; }
 .stage img:not(:first-child) { position: absolute; inset: 0; }
