@@ -229,6 +229,16 @@ footer a:hover { color: var(--gold); }
   .dots { display: none; }
   .facts { grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 }
+
+/* Effets liés au défilement */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform-origin: 0 50%; transform: scaleX(0); z-index: 60; pointer-events: none; }
+.slides { position: absolute; inset: 0; }
+.slides, .hero .wrap { will-change: transform; }
+.mq-shift { will-change: transform; }
+.manifest .big .w { opacity: .18; transition: opacity .25s linear; }
+.manifest .big .w.lit { opacity: 1; }
+.kind .ph, .kind .num { will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .manifest .big .w { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -247,6 +257,7 @@ footer a:hover { color: var(--gold); }
   </div>
 </header>
 
+<div class="progress" id="progress" aria-hidden="true"></div>
 <div class="hero" id="top">
   <div class="slides" aria-hidden="true">
     <img class="on" src="images/alpine-falaise.jpg" alt="" style="object-position:60% 60%">
@@ -267,17 +278,17 @@ footer a:hover { color: var(--gold); }
 </div>
 
 <div class="marquee" aria-label="Véhicules photographiés : collection, sportives, haut de gamme, luxe, exotiques">
-  <div class="track" aria-hidden="true">
+  <div class="mq-shift" id="mq"><div class="track" aria-hidden="true">
     <span>Collection</span><span>Sportives</span><span>Haut de gamme</span><span>Luxe</span><span>Exotiques</span>
     <span>Collection</span><span>Sportives</span><span>Haut de gamme</span><span>Luxe</span><span>Exotiques</span>
-  </div>
+  </div></div>
 </div>
 
 <section>
   <div class="wrap manifest">
     <div class="rv">
       <p class="eyebrow">L’approche</p>
-      <p class="big">Chaque véhicule mérite un écrin <em>à sa hauteur</em>.</p>
+      <p class="big" id="big">Chaque véhicule mérite un écrin <em>à sa hauteur</em>.</p>
     </div>
     <div class="rv">
       <p class="body">Je photographie les automobiles d’exception dans des lieux qui le sont tout autant. Une lumière maîtrisée, une composition pensée comme une œuvre, puis une retouche artistique sur chaque image, pour sublimer la ligne, la matière et le caractère du véhicule.</p>
@@ -551,6 +562,55 @@ footer a:hover { color: var(--gold); }
     rv.forEach(function (el) { io.observe(el); });
   }
 })();
+
+  // Effets au défilement : plus on descend, plus la page bouge
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var bar = document.getElementById('progress'), hero = document.getElementById('top');
+    var heroImgs = hero.querySelector('.slides'), heroTxt = hero.querySelector('.wrap'), mq = document.getElementById('mq');
+    var big = document.getElementById('big');
+    // découpe la phrase du manifeste en mots qui s'allument un à un
+    (function split(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function (t) {
+            if (!t) return;
+            if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(t)); return; }
+            var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = t; frag.appendChild(sp);
+          });
+          n.parentNode.replaceChild(frag, n);
+        } else split(n);
+      });
+    })(big);
+    var words = big.querySelectorAll('.w'), kinds = document.querySelectorAll('.kind');
+    var ticking = false;
+    function clamp(v) { return Math.max(0, Math.min(1, v)); }
+    function update() {
+      ticking = false;
+      var y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+      bar.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
+      var hp = clamp(y / vh);
+      if (hp < 1) {
+        heroImgs.style.transform = 'translateY(' + (y * 0.4) + 'px) scale(' + (1 + hp * 0.12) + ')';
+        heroTxt.style.transform = 'translateY(' + (-hp * 90) + 'px)';
+        heroTxt.style.opacity = 1 - hp * 1.4;
+      }
+      mq.style.transform = 'translateX(' + (-y * 0.25) + 'px)';
+      var r = big.getBoundingClientRect(), wp = clamp((vh * 0.85 - r.top) / (vh * 0.5));
+      var n = Math.round(wp * words.length);
+      words.forEach(function (w, i) { w.classList.toggle('lit', i < n); });
+      kinds.forEach(function (k) {
+        var b = k.getBoundingClientRect(), c = (b.top + b.height / 2 - vh / 2) / vh; // -1 … 1 autour du centre
+        if (Math.abs(c) > 1.5) return;
+        k.querySelector('.ph').style.transform = 'scale(' + (1 - Math.min(Math.abs(c), 1) * 0.08) + ')';
+        k.querySelector('.num').style.transform = 'translateY(' + (c * 120) + 'px)';
+      });
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
 </script>
 </body>
 </html>
