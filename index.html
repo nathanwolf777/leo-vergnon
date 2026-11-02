@@ -250,7 +250,7 @@ footer a:hover { color: var(--gold); }
 .feature > * { min-width: 0; }
 .stage3d { --w: min(420px, 74vw); --h: calc(var(--w) * .72); --t: 30px; position: relative; height: calc(var(--h) + 180px); display: grid; place-items: center; perspective: 1400px; cursor: grab; touch-action: pan-y; }
 .stage3d::after { content: ""; position: absolute; left: 50%; bottom: 40px; width: calc(var(--w) * 1.05); height: 46px; transform: translateX(-42%); background: radial-gradient(closest-side, rgba(0,0,0,.75), transparent); filter: blur(6px); pointer-events: none; }
-.book { --sx: 4%; position: relative; width: var(--w); height: var(--h); transform-style: preserve-3d; transform: translateX(var(--sx)) rotateX(var(--rx, 16deg)) rotateY(var(--ry, -26deg)); transition: transform .6s var(--ease); z-index: 1; }
+.book { --sx: 4%; position: relative; width: var(--w); height: var(--h); transform-style: preserve-3d; transform: translateX(var(--sx)) rotateX(var(--rx, 16deg)) rotateY(var(--ry, -26deg)) scale(var(--bs, 1)); transition: transform .6s var(--ease); z-index: 1; }
 .book.live { transition: transform .12s linear; }
 .book > * { position: absolute; backface-visibility: hidden; }
 .b-back { inset: 0; transform: translateZ(calc(var(--t) / -2)) rotateY(180deg); background: #121112; }
@@ -295,7 +295,8 @@ footer a:hover { color: var(--gold); }
 .feature li em { color: var(--gold); font-style: normal; margin-right: 12px; font-family: var(--display); }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: clamp(48px, 7vw, 90px); }
 .duo h3 { margin-top: 18px; } .duo p { color: var(--mute); font-size: 15px; margin-top: 6px; }
-@media (max-width: 900px) { .feature, .duo { grid-template-columns: 1fr; } .stage3d { --w: 58vw; --t: 20px; height: calc(var(--h) + 120px); } .stage3d.open .book { --sx: 40%; } }
+@media (max-width: 900px) { .feature, .duo { grid-template-columns: 1fr; } .stage3d { --w: 58vw; --t: 20px; height: calc(var(--h) + 120px); } .stage3d.open .book { --sx: 37%; --bs: .74; --ry: 0deg; --rx: 10deg; }
+  .stage3d { overflow: hidden; } }
 @media (prefers-reduced-motion: reduce) { .book, .b-cover, .leaf { transition: none; } }
 
 /* Trois regards : la souris fait glisser d'une prise de vue à l'autre */
