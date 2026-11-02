@@ -346,6 +346,13 @@ footer a:hover { color: var(--gold); }
 .obj3d:hover .p3 { --fx: 30%; --fy: 6%; --fz: 60px; --fr: 13deg; }
 .print { transform: translate3d(var(--fx), var(--fy), var(--fz)) rotate(var(--fr)); }
 @media (prefers-reduced-motion: reduce) { .tilt, .print, .poster3d .frame { transition: none; } }
+
+/* Bandeau photo de transition, fondu en haut et en bas */
+.band { position: relative; height: clamp(260px, 62vh, 640px); overflow: hidden; display: grid; place-items: end center; padding-bottom: 7%;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent); }
+.band img { position: absolute; left: 0; top: -12%; width: 100%; height: 124%; object-fit: cover; transform: translateY(var(--by, 0px)); will-change: transform; }
+.band-q { position: relative; font: italic 300 clamp(20px, 2.6vw, 36px)/1.25 var(--display); color: var(--ivory); text-align: center; max-width: 20em; padding-inline: 20px; text-shadow: 0 2px 24px rgba(0,0,0,.8); }
+@media (max-width: 600px) { .band { height: 300px; } }
 </style>
 </head>
 <body>
@@ -546,6 +553,11 @@ footer a:hover { color: var(--gold); }
     <p class="extra">Aussi : fichiers numériques · Retouches artistiques · Prix sur devis</p>
   </div>
 </section>
+
+<div class="band" aria-hidden="false">
+  <img src="images/alpine-tunnel.jpg" alt="Alpine A110 rose, phares allumés, dans un tunnel creusé dans la roche" loading="lazy" id="band-img">
+  <p class="band-q">«&nbsp;Je cherche toujours le lieu qui révèle la&nbsp;voiture.&nbsp;»</p>
+</div>
 
 <section id="apropos" style="padding-top:0">
   <div class="wrap about">
@@ -808,6 +820,8 @@ footer a:hover { color: var(--gold); }
         heroTxt.style.opacity = 1 - hp * 1.4;
       }
       mq.style.transform = 'translateX(' + (-y * 0.25) + 'px)';
+      var bi = document.getElementById('band-img'), br = bi.parentNode.getBoundingClientRect();
+      if (br.bottom > 0 && br.top < vh) bi.style.setProperty('--by', ((br.top + br.height / 2 - vh / 2) * -0.12) + 'px');
       var pin = document.getElementById('pin').getBoundingClientRect(), wp = clamp((-pin.top - vh * 0.1) / (pin.height - vh * 1.4));
       var n = Math.round(wp * words.length);
       words.forEach(function (w, i) { w.classList.toggle('lit', i < n); });
