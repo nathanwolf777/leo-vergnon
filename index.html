@@ -837,8 +837,18 @@ footer a:hover { color: var(--gold); }
       set(cur, -y * 6, (x - .5) * 8);
     });
     st.addEventListener('pointerleave', function () { cur = Math.round(cur); set(cur, 0, 0); });
+    // au doigt (écran tactile) : chaque appui passe au regard suivant
+    var lastTouch = 0, t0 = null;
+    st.addEventListener('touchstart', function (e) { var t = e.touches[0]; t0 = { x: t.clientX, y: t.clientY, t: Date.now() }; }, { passive: true });
+    st.addEventListener('touchend', function (e) {
+      var t = e.changedTouches[0];
+      if (!t0 || Math.abs(t.clientX - t0.x) > 12 || Math.abs(t.clientY - t0.y) > 12 || Date.now() - t0.t > 600) return; // c'était un défilement
+      lastTouch = Date.now();
+      cur = (Math.round(cur) + 1) % imgs.length; box.classList.add('touched'); set(cur, 0, 0);
+    }, { passive: true });
     st.addEventListener('click', function (e) {
-      if (e.pointerType === 'mouse' || (window.matchMedia('(hover: hover)').matches && !e.pointerType)) return;
+      if (Date.now() - lastTouch < 800) return; // déjà traité par touchend
+      if (window.matchMedia('(hover: hover)').matches) return;
       cur = (Math.round(cur) + 1) % imgs.length; box.classList.add('touched'); set(cur, 0, 0);
     });
     tabs.forEach(function (t, i) {
