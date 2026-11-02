@@ -286,6 +286,23 @@ footer a:hover { color: var(--gold); }
 .duo h3 { margin-top: 18px; } .duo p { color: var(--mute); font-size: 15px; margin-top: 6px; }
 @media (max-width: 900px) { .feature, .duo { grid-template-columns: 1fr; } .stage3d { --w: 58vw; --t: 20px; height: calc(var(--h) + 120px); } .stage3d.open .book { --sx: 40%; } }
 @media (prefers-reduced-motion: reduce) { .book, .b-cover { transition: none; } }
+
+/* Trois regards : la souris fait glisser d'une prise de vue à l'autre */
+.regards { margin-top: 48px; }
+.rg-stage { position: relative; aspect-ratio: 2 / 1; max-width: 100%; perspective: 1200px; cursor: ew-resize; touch-action: pan-y; }
+.rg-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)) scale(var(--sc, 1)); transition: transform .5s var(--ease); will-change: opacity, transform; }
+.rg-stage img.on { opacity: 1; }
+.rg-hint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); font: 400 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase; color: var(--ivory); background: rgba(13,13,14,.55); padding: 9px 14px; pointer-events: none; transition: opacity .5s; }
+.regards.touched .rg-hint { opacity: 0; }
+.rg-tabs { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 28px; padding-top: 22px; }
+.rg-tabs::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--line); }
+.rg-bar { position: absolute; top: -1px; left: 0; height: 3px; width: calc((100% - 40px) / 3); background: var(--gold); transform: translateX(var(--bx, 0px)); }
+.rg-tabs button { text-align: left; opacity: .45; transition: opacity .3s; }
+.rg-tabs button[aria-selected="true"] { opacity: 1; }
+.rg-tabs .num { font: italic 300 30px/1 var(--display); color: var(--gold); }
+.rg-tabs h3 { font-size: clamp(24px, 2.4vw, 34px); margin-top: 6px; }
+.rg-tabs p { color: var(--mute); font-size: 15px; margin-top: 6px; }
+@media (max-width: 600px) { .rg-tabs { gap: 10px; } .rg-tabs p { display: none; } .rg-tabs .num { font-size: 22px; } .rg-tabs h3 { font-size: 20px; } }
 </style>
 </head>
 <body>
@@ -409,10 +426,19 @@ footer a:hover { color: var(--gold); }
 <section>
   <div class="wrap">
     <div class="rv"><p class="eyebrow">Les prises de vue</p><h2>Trois regards sur une même automobile</h2></div>
-    <div class="kinds">
-      <div class="kind rv"><div class="ph"><img loading="lazy" src="images/ferrari-sf90-batisse.jpg" width="795" height="418" alt="Ferrari SF90 rouge devant une bâtisse en pierre"></div><div class="cap"><span class="num" aria-hidden="true">01</span><h3>Statique</h3><p>La pose parfaite, dans un décor choisi avec soin.</p></div></div>
-      <div class="kind rv"><div class="ph"><img loading="lazy" src="images/porsche-911r-rolling.jpg" width="773" height="409" alt="Porsche 911 R en mouvement au crépuscule"></div><div class="cap"><span class="num" aria-hidden="true">02</span><h3>Rolling</h3><p>La vitesse, la tension, la route.</p></div></div>
-      <div class="kind rv"><div class="ph"><img loading="lazy" src="images/ferrari-volant.jpg" width="815" height="467" alt="Volant d’une Ferrari"></div><div class="cap"><span class="num" aria-hidden="true">03</span><h3>Détails</h3><p>Cuir, carbone, emblèmes : la matière en gros plan.</p></div></div>
+    <div class="regards rv" id="regards">
+      <div class="rg-stage" id="rg-stage">
+        <img src="images/aston-statique.jpg" width="768" height="342" alt="Aston Martin DBS garée sous les oliviers" class="on">
+        <img src="images/aston-rolling.jpg" width="812" height="421" alt="Aston Martin DBS lancée sur une route de campagne" loading="lazy">
+        <img src="images/aston-details.jpg" width="775" height="386" alt="Habitacle et volant de l’Aston Martin DBS" loading="lazy">
+        <span class="rg-hint" aria-hidden="true">← déplacez la souris →</span>
+      </div>
+      <div class="rg-tabs" role="tablist">
+        <span class="rg-bar" id="rg-bar" aria-hidden="true"></span>
+        <button type="button" role="tab" aria-selected="true"><span class="num">01</span><h3>Statique</h3><p>La pose parfaite, dans un décor choisi avec soin.</p></button>
+        <button type="button" role="tab" aria-selected="false"><span class="num">02</span><h3>Rolling</h3><p>La vitesse, la tension, la route.</p></button>
+        <button type="button" role="tab" aria-selected="false"><span class="num">03</span><h3>Détails</h3><p>Cuir, carbone, emblèmes : la matière en gros plan.</p></button>
+      </div>
     </div>
   </div>
 </section>
@@ -690,6 +716,41 @@ footer a:hover { color: var(--gold); }
       if (fine) st.classList.remove('open');
     });
     st.addEventListener('click', function () { if (!fine) st.classList.toggle('open'); });
+  })();
+
+  // Trois regards : position de la souris = prise de vue affichée (fondu continu)
+  (function () {
+    var box = document.getElementById('regards'), st = document.getElementById('rg-stage');
+    if (!box) return;
+    var imgs = st.querySelectorAll('img'), tabs = box.querySelectorAll('.rg-tabs button'), bar = document.getElementById('rg-bar');
+    function set(v, tx, ty) {
+      imgs.forEach(function (im, i) {
+        var o = Math.max(0, 1 - Math.abs(v - i));
+        im.style.opacity = o; im.classList.toggle('on', o > .5);
+        im.style.setProperty('--sc', 0.96 + 0.04 * o);
+        im.style.setProperty('--tx', (tx || 0) + 'deg'); im.style.setProperty('--ty', (ty || 0) + 'deg');
+      });
+      var n = Math.round(v);
+      tabs.forEach(function (t, i) { t.setAttribute('aria-selected', i === n); });
+      var w = tabs[0].offsetWidth + 20;
+      bar.style.setProperty('--bx', (v * w) + 'px');
+    }
+    var cur = 0;
+    st.addEventListener('pointermove', function (e) {
+      var r = st.getBoundingClientRect(), x = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), y = (e.clientY - r.top) / r.height - .5;
+      var raw = x * 2, i0 = Math.floor(Math.min(raw, 1.999)), f = raw - i0;
+      f = f < .3 ? 0 : f > .7 ? 1 : (function (t) { return t * t * (3 - 2 * t); })((f - .3) / .4);
+      cur = i0 + f; box.classList.add('touched');
+      set(cur, -y * 6, (x - .5) * 8);
+    });
+    st.addEventListener('pointerleave', function () { cur = Math.round(cur); set(cur, 0, 0); });
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { cur = i; box.classList.add('touched'); set(i, 0, 0); });
+      t.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { cur = i; set(i, 0, 0); } });
+    });
+    window.addEventListener('resize', function () { set(cur, 0, 0); });
+    if (!window.matchMedia('(hover: hover)').matches) st.querySelector('.rg-hint').textContent = 'Touchez Statique, Rolling ou Détails';
+    set(0, 0, 0);
   })();
 </script>
 </body>
