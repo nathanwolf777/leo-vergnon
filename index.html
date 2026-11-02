@@ -684,6 +684,11 @@ footer a:hover { color: var(--gold); }
     pr.addEventListener('click', pick);
     pr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
   });
+  // un appui n'importe où ailleurs repose le tirage sorti (pratique sur téléphone)
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.print')) return;
+    prints.forEach(function (x) { if (x._goal === 1) { x._go(0); x.parentNode.classList.remove('has-pick'); } });
+  });
   document.querySelectorAll('.prints3d').forEach(function (pl) {
     pl.closest('.obj3d').addEventListener('pointerleave', function () { prints.forEach(function (x) { if (x._goal === 1) x._go(0); }); pl.classList.remove('has-pick'); });
   });
