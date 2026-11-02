@@ -328,6 +328,8 @@ footer a:hover { color: var(--gold); }
 .prints3d { width: 62%; aspect-ratio: 2 / 1.25; }
 .print { position: absolute; inset: 0; background: #f6f2ea; padding: 5% 5% 5%; box-shadow: 8px 18px 30px rgba(0,0,0,.6); transition: transform .7s var(--ease); display: grid; place-items: center; }
 .print img { width: 100%; height: auto; }
+.print { cursor: zoom-in; }
+.print:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 .p1 { transform: translate3d(-8%, 4%, 0) rotate(-7deg); }
 .p2 { transform: translate3d(0, 0, 14px) rotate(1deg); }
 .p3 { transform: translate3d(8%, -3%, 28px) rotate(6deg); }
@@ -505,13 +507,13 @@ footer a:hover { color: var(--gold); }
       <article class="rv"><div class="obj3d" data-tilt role="img" aria-label="Poster encadré : Ferrari 812 face à un cheval">
         <div class="tilt poster3d"><div class="frame"><div class="mat"><img loading="lazy" src="images/ferrari-812-cheval.jpg" alt=""></div></div><span class="glare"></span></div>
       </div><h3>Posters</h3><p>Grand format, à exposer au bureau comme au garage.</p></article>
-      <article class="rv"><div class="obj3d" data-tilt role="img" aria-label="Trois tirages photo en éventail">
+      <article class="rv"><div class="obj3d" data-tilt aria-label="Trois tirages photo en éventail">
         <div class="tilt prints3d">
-          <div class="print p1"><img loading="lazy" src="images/rolling-vert-automne.jpg" alt=""></div>
-          <div class="print p2"><img loading="lazy" src="images/cayman-gt4-portail.jpg" alt=""></div>
-          <div class="print p3"><img loading="lazy" src="images/amg-gt-foin.jpg" alt=""></div>
+          <div class="print p1" role="button" tabindex="0" data-cap="Tirage · Rolling d’automne" aria-label="Agrandir : Tirage · Rolling d’automne"><img loading="lazy" src="images/rolling-vert-automne.jpg" alt=""></div>
+          <div class="print p2" role="button" tabindex="0" data-cap="Tirage · Porsche Cayman GT4" aria-label="Agrandir : Tirage · Porsche Cayman GT4"><img loading="lazy" src="images/cayman-gt4-portail.jpg" alt=""></div>
+          <div class="print p3" role="button" tabindex="0" data-cap="Tirage · Mercedes-AMG GT sous le foin" aria-label="Agrandir : Tirage · Mercedes-AMG GT sous le foin"><img loading="lazy" src="images/amg-gt-foin.jpg" alt=""></div>
         </div>
-      </div><h3>Tirages</h3><p>Tirages d’art, avec ou sans cadre.</p></article>
+      </div><h3>Tirages</h3><p>Tirages d’art, avec ou sans cadre. Cliquez sur un tirage pour l’agrandir.</p></article>
     </div>
     <p class="extra">Aussi : fichiers numériques · Retouches artistiques · Prix sur devis</p>
   </div>
@@ -636,15 +638,21 @@ footer a:hover { color: var(--gold); }
 
   // Visionneuse
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap'), idx = 0, opener;
-  function visible() { return shots.filter(function (s) { return !s.hidden; }); }
+  var group = null; // null = portfolio, sinon la liste des tirages
+  function visible() { return group || shots.filter(function (s) { return !s.hidden; }); }
   function show(i) {
     var v = visible(); idx = (i + v.length) % v.length;
-    var img = v[idx].querySelector('img');
-    lbImg.src = img.src; lbImg.alt = img.alt; lbCap.textContent = v[idx].querySelector('figcaption').textContent;
+    var img = v[idx].querySelector('img'), fc = v[idx].querySelector('figcaption');
+    lbImg.src = img.src; lbImg.alt = img.alt || v[idx].dataset.cap; lbCap.textContent = fc ? fc.textContent : v[idx].dataset.cap;
   }
-  function open(s) { opener = s; show(visible().indexOf(s)); lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false'); document.getElementById('lb-close').focus(); }
+  function open(s, g) { group = g || null; opener = s; show(visible().indexOf(s)); lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false'); document.getElementById('lb-close').focus(); }
   function close() { lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); if (opener) opener.focus(); }
   shots.forEach(function (s) { s.addEventListener('click', function () { open(s); }); });
+  var prints = Array.prototype.slice.call(document.querySelectorAll('.print'));
+  prints.forEach(function (pr) {
+    pr.addEventListener('click', function () { open(pr, prints); });
+    pr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(pr, prints); } });
+  });
   document.getElementById('lb-close').addEventListener('click', close);
   document.getElementById('lb-prev').addEventListener('click', function () { show(idx - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { show(idx + 1); });
