@@ -244,7 +244,7 @@ footer a:hover { color: var(--gold); }
 .big-body { color: var(--ivory) !important; font-size: clamp(17px, 1.35vw, 20px); }
 #big .w { opacity: .12; transition: opacity .3s linear; }
 #big .w.lit { opacity: 1; }
-@media (max-width: 900px) { .pin { height: 220vh; } .pin-in { align-items: flex-start; padding-top: 90px; } }
+@media (max-width: 900px) { .pin { height: 165vh; height: 165svh; } .pin-in { top: 70px; height: auto; padding-block: 30px 80px; } }
 .kind .ph, .kind .num { will-change: transform; }
 @media (prefers-reduced-motion: reduce) { #big .w { opacity: 1; } .pin { height: auto; } .pin-in { position: static; height: auto; padding-block: 80px; } }
 
@@ -821,7 +821,7 @@ footer a:hover { color: var(--gold); }
       mq.style.transform = 'translateX(' + (-y * 0.25) + 'px)';
       var bi = document.getElementById('band-img'), br = bi.parentNode.getBoundingClientRect();
       if (br.bottom > 0 && br.top < vh) bi.style.setProperty('--by', ((br.top + br.height / 2 - vh / 2) * -0.12) + 'px');
-      var pin = document.getElementById('pin').getBoundingClientRect(), wp = clamp((-pin.top - vh * 0.1) / (pin.height - vh * 1.4));
+      var pin = document.getElementById('pin').getBoundingClientRect(), pinH = document.querySelector('.pin-in').offsetHeight, wp = clamp((-pin.top - vh * 0.1) / Math.max(1, pin.height - pinH - vh * 0.4));
       var n = Math.round(wp * words.length);
       words.forEach(function (w, i) { w.classList.toggle('lit', i < n); });
       kinds.forEach(function (k) {
