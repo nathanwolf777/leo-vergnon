@@ -351,6 +351,12 @@ footer a:hover { color: var(--gold); }
 .band { position: relative; height: clamp(260px, 62vh, 640px); overflow: hidden; display: grid; place-items: end center; padding-bottom: 7%;
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent); }
 .band img { position: absolute; left: 0; top: -12%; width: 100%; height: 124%; object-fit: cover; transform: translateY(var(--by, 0px)); will-change: transform; }
+.band img.band-off { transform: translateY(var(--by, 0px)); }
+.band { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.band .band-off { opacity: 0; transition: opacity .9s cubic-bezier(.4,0,.2,1); }
+.band.off .band-off { opacity: 1; transition-duration: .55s; }
+.band:focus-visible { outline: 1px solid var(--gold); outline-offset: -6px; }
+.band-hint { position: relative; font: 400 10px/1 var(--body); letter-spacing: .32em; text-transform: uppercase; color: var(--gold); opacity: .75; transition: opacity .4s; pointer-events: none; }
 .band-q { position: relative; font: italic 300 clamp(20px, 2.6vw, 36px)/1.25 var(--display); color: var(--ivory); text-align: center; max-width: 20em; padding-inline: 20px; text-shadow: 0 2px 24px rgba(0,0,0,.8); }
 @media (max-width: 600px) { .band { height: 300px; } }
 </style>
@@ -554,8 +560,10 @@ footer a:hover { color: var(--gold); }
   </div>
 </section>
 
-<div class="band" aria-hidden="false">
+<div class="band" id="band" role="button" tabindex="0" aria-pressed="false" aria-label="Éteindre ou rallumer les phares de l’Alpine">
   <img src="images/alpine-tunnel.jpg" alt="Alpine A110 rose, phares allumés, dans un tunnel creusé dans la roche" loading="lazy" id="band-img">
+  <img src="images/alpine-tunnel-off.jpg" alt="" loading="lazy" class="band-off" aria-hidden="true">
+  <span class="band-hint" id="band-hint">Touchez la voiture</span>
 </div>
 
 <section id="apropos" style="padding-top:0">
@@ -820,7 +828,7 @@ footer a:hover { color: var(--gold); }
       }
       mq.style.transform = 'translateX(' + (-y * 0.25) + 'px)';
       var bi = document.getElementById('band-img'), br = bi.parentNode.getBoundingClientRect();
-      if (br.bottom > 0 && br.top < vh) bi.style.setProperty('--by', ((br.top + br.height / 2 - vh / 2) * -0.12) + 'px');
+      if (br.bottom > 0 && br.top < vh) bi.parentNode.style.setProperty('--by', ((br.top + br.height / 2 - vh / 2) * -0.12) + 'px');
       var pin = document.getElementById('pin').getBoundingClientRect(), pinH = document.querySelector('.pin-in').offsetHeight, wp = clamp((-pin.top - vh * 0.1) / Math.max(1, pin.height - pinH - vh * 0.4));
       var n = Math.round(wp * words.length);
       words.forEach(function (w, i) { w.classList.toggle('lit', i < n); });
@@ -925,5 +933,18 @@ footer a:hover { color: var(--gold); }
     o.addEventListener('pointerleave', function () { o.classList.remove('live'); t.style.removeProperty('--ry'); t.style.removeProperty('--rx'); });
   });
 </script>
+<script>
+(function () {
+  var band = document.getElementById('band'), hint = document.getElementById('band-hint');
+  if (!band) return;
+  var verb = matchMedia('(hover: hover)').matches ? 'Cliquez sur' : 'Touchez';
+  function label() { hint.textContent = verb + (band.classList.contains('off') ? ' la voiture pour rallumer les phares' : ' la voiture'); }
+  function toggle() { var off = band.classList.toggle('off'); band.setAttribute('aria-pressed', off ? 'true' : 'false'); label(); }
+  label();
+  band.addEventListener('click', toggle);
+  band.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+})();
+</script>
+
 </body>
 </html>
