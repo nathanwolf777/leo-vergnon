@@ -235,10 +235,15 @@ footer a:hover { color: var(--gold); }
 .slides { position: absolute; inset: 0; }
 .slides, .hero .wrap { will-change: transform; }
 .mq-shift { will-change: transform; }
-.manifest .big .w { opacity: .18; transition: opacity .25s linear; }
-.manifest .big .w.lit { opacity: 1; }
+.pin { padding-block: 0; height: 260vh; }
+.pin-in { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; align-items: center; }
+.pin-in > .wrap { width: 100%; }
+#big { color: var(--ivory); font-size: clamp(17px, 1.35vw, 20px); }
+#big .w { opacity: .14; transition: opacity .3s linear; }
+#big .w.lit { opacity: 1; }
+@media (max-width: 900px) { .pin { height: 220vh; } .pin-in { align-items: flex-start; padding-top: 90px; } }
 .kind .ph, .kind .num { will-change: transform; }
-@media (prefers-reduced-motion: reduce) { .manifest .big .w { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #big .w { opacity: 1; } .pin { height: auto; } .pin-in { position: static; height: auto; padding-block: 80px; } }
 </style>
 </head>
 <body>
@@ -284,21 +289,21 @@ footer a:hover { color: var(--gold); }
   </div></div>
 </div>
 
-<section>
-  <div class="wrap manifest">
+<section class="pin" id="pin">
+  <div class="pin-in"><div class="wrap manifest">
     <div class="rv">
       <p class="eyebrow">L’approche</p>
-      <p class="big" id="big">Chaque véhicule mérite un écrin <em>à sa hauteur</em>.</p>
+      <p class="big">Chaque véhicule mérite un écrin <em>à sa hauteur</em>.</p>
     </div>
     <div class="rv">
-      <p class="body">Je photographie les automobiles d’exception dans des lieux qui le sont tout autant. Une lumière maîtrisée, une composition pensée comme une œuvre, puis une retouche artistique sur chaque image, pour sublimer la ligne, la matière et le caractère du véhicule.</p>
+      <p class="body" id="big">Je photographie les automobiles d’exception dans des lieux qui le sont tout autant. Une lumière maîtrisée, une composition pensée comme une œuvre, puis une retouche artistique sur chaque image, pour sublimer la ligne, la matière et le caractère du véhicule.</p>
       <div class="facts">
         <div><b>3</b><span>regards : statique, rolling, détails</span></div>
         <div><b>3</b><span>formules de shooting</span></div>
         <div><b>FR</b><span>et pays frontaliers</span></div>
       </div>
     </div>
-  </div>
+  </div></div>
 </section>
 
 <section id="portfolio" style="padding-top:0">
@@ -597,7 +602,7 @@ footer a:hover { color: var(--gold); }
         heroTxt.style.opacity = 1 - hp * 1.4;
       }
       mq.style.transform = 'translateX(' + (-y * 0.25) + 'px)';
-      var r = big.getBoundingClientRect(), wp = clamp((vh * 0.85 - r.top) / (vh * 0.5));
+      var pin = document.getElementById('pin').getBoundingClientRect(), wp = clamp((-pin.top - vh * 0.1) / (pin.height - vh * 1.4));
       var n = Math.round(wp * words.length);
       words.forEach(function (w, i) { w.classList.toggle('lit', i < n); });
       kinds.forEach(function (k) {
