@@ -590,12 +590,14 @@ footer a:hover { color: var(--gold); }
     <form id="form" class="rv" novalidate>
       <label>Nom<input id="f-nom" name="nom" autocomplete="name" required></label>
       <label>Téléphone<input id="f-tel" name="tel" type="tel" autocomplete="tel"></label>
+      <label class="full">E-mail<input id="f-mail" name="email" type="email" autocomplete="email" placeholder="Pour que je puisse vous répondre"></label>
       <label class="full">Véhicule<input id="f-vehicule" name="vehicule" placeholder="Marque, modèle, année"></label>
       <label>Formule<select id="f-formule" name="formule"><option>Laissez-vous guider</option><option>Sur mesure</option><option>Clé en main (sur demande)</option><option>Je ne sais pas encore</option></select></label>
       <label>Ville ou région<input id="f-lieu" name="lieu" placeholder="Ex. Lyon"></label>
       <label class="full">Votre projet<textarea id="f-msg" name="message" placeholder="Book, posters, tirages, usage des photos, dates souhaitées…"></textarea></label>
       <button class="btn solid" type="submit">Envoyer la demande</button>
-      <p class="form-note">Le bouton ouvre votre messagerie avec la demande déjà rédigée, adressée à leovergnon@gmail.com.</p>
+      <input type="text" name="_honey" id="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+      <p class="form-note" id="f-note" role="status">Je vous réponds par e-mail ou par téléphone.</p>
     </form>
   </div>
 </section>
@@ -760,16 +762,31 @@ footer a:hover { color: var(--gold); }
 
   // Carrousel produits
 
-  // Formulaire de devis : prépare un e-mail
-  document.getElementById('form').addEventListener('submit', function (e) {
+  // Formulaire de devis : envoi direct à Léo (FormSubmit), messagerie en secours
+  var form = document.getElementById('form'), note = document.getElementById('f-note'), sendBtn = form.querySelector('button[type=submit]');
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     var g = function (id) { return document.getElementById(id).value.trim(); };
-    var nom = g('f-nom');
+    var nom = g('f-nom'), mail = g('f-mail'), tel = g('f-tel');
     if (!nom) { document.getElementById('f-nom').focus(); document.getElementById('f-nom').placeholder = 'Indiquez votre nom'; return; }
+    if (!mail && !tel) { note.textContent = 'Indiquez un e-mail ou un téléphone pour que je puisse vous répondre.'; document.getElementById('f-mail').focus(); return; }
+    if (mail && !document.getElementById('f-mail').checkValidity()) { note.textContent = 'Cette adresse e-mail ne semble pas valide.'; document.getElementById('f-mail').focus(); return; }
+    if (g('f-hp')) return;
     var body = 'Bonjour Léo,\n\nJe souhaite un devis pour un shooting.\n\n'
-      + 'Nom : ' + nom + '\nTéléphone : ' + g('f-tel') + '\nVéhicule : ' + g('f-vehicule')
+      + 'Nom : ' + nom + '\nE-mail : ' + mail + '\nTéléphone : ' + tel + '\nVéhicule : ' + g('f-vehicule')
       + '\nFormule : ' + g('f-formule') + '\nLieu : ' + g('f-lieu') + '\n\n' + g('f-msg') + '\n';
-    window.location.href = 'mailto:leovergnon@gmail.com?subject=' + encodeURIComponent('Demande de devis · ' + nom) + '&body=' + encodeURIComponent(body);
+    var data = { _subject: 'Demande de devis · ' + nom, _template: 'table', _captcha: 'false', Nom: nom, 'E-mail': mail, 'Téléphone': tel,
+      'Véhicule': g('f-vehicule'), Formule: g('f-formule'), Lieu: g('f-lieu'), Projet: g('f-msg') };
+    if (mail) data._replyto = mail;
+    sendBtn.disabled = true; note.textContent = 'Envoi en cours…';
+    fetch('https://formsubmit.co/ajax/leovergnon@gmail.com', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || String(j.success) !== 'true') throw new Error(j.message || 'erreur'); }); })
+      .then(function () { form.reset(); note.textContent = 'Merci ' + nom + ', votre demande est bien partie. Je reviens vers vous rapidement.'; })
+      .catch(function () {
+        note.textContent = 'L’envoi n’a pas abouti : votre messagerie va s’ouvrir avec la demande déjà rédigée.';
+        window.location.href = 'mailto:leovergnon@gmail.com?subject=' + encodeURIComponent('Demande de devis · ' + nom) + '&body=' + encodeURIComponent(body);
+      })
+      .then(function () { sendBtn.disabled = false; });
   });
 
   // Apparition au défilement
